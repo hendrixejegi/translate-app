@@ -3,7 +3,7 @@ import TranslateForm from "./TranslateForm";
 
 const TranslateApp = () => {
   return (
-    <main className="space-y-12 bg-[url(/hero_img-sm.jpg)] bg-top bg-no-repeat px-4 py-12">
+    <main className="space-y-12 bg-[url(/hero_img-sm.jpg)] bg-top bg-no-repeat px-4 py-12 md:bg-[url(/hero_img.jpg)]">
       <div>
         <img
           src={logo}
