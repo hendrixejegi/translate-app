@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-text-50: #f9fafb;
+  --color-text-100: #d2d5da;
+
+  --color-neutral-200: #4d5562;
+  --color-neutral-300: #394150;
+  --color-neutral-400: #040711;
+
+  --color-accent-200: #7ca9f3;
+  --color-accent-400: #263fa9;
+
+  --color-accent-300: #212936cc;
+  --color-accent-500: #121826cc;
+
+  --font-sans: "DM Sans", sans-serif;
+}
+
+@layer utilities {
+  .sans-12 {
+    @apply font-sans text-xs font-medium;
+  }
+
+  .sans-14 {
+    @apply font-sans text-sm font-bold;
+  }
+
+  .sans-16 {
+    @apply font-sans font-bold;
+  }
+}
