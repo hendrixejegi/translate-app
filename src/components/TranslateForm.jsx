@@ -14,6 +14,7 @@ const TranslateForm = (props) => {
     translatingFrom,
     translatingTo,
     dispatch,
+    handleSubmit,
   } = props;
 
   const handleTextChange = (event) => {
@@ -36,8 +37,16 @@ const TranslateForm = (props) => {
     dispatch({ type: "update_translating_to", value: event.target.value });
   };
 
+  const handleSwap = (event) => {
+    event.preventDefault();
+    dispatch({ type: "swap_options" });
+  };
+
   return (
-    <form className="space-y-4 lg:flex lg:justify-center lg:gap-4 lg:space-y-0">
+    <form
+      className="space-y-4 lg:flex lg:justify-center lg:gap-4 lg:space-y-0"
+      onSubmit={handleSubmit}
+    >
       <fieldset
         name="translate-from"
         className="bg-accent-300 mx-auto w-full max-w-2xl rounded-3xl border-2 border-neutral-200 p-6 backdrop-blur-md lg:mx-0"
@@ -128,7 +137,10 @@ const TranslateForm = (props) => {
               <img src={Copy} width={20} height={20} aria-hidden="true" />
             </button>
           </div>
-          <button className="sans-16 text-text-50 flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-400 px-4 py-2">
+          <button
+            type="submit"
+            className="sans-16 text-text-50 flex cursor-pointer items-center gap-2 rounded-xl border border-blue-200 bg-blue-400 px-4 py-2"
+          >
             <img src={Alfa} width={24} height={24} aria-hidden="true" />
             <span>Translate</span>
           </button>
@@ -182,7 +194,10 @@ const TranslateForm = (props) => {
           >
             <option value="spanish">Spanish</option>
           </select>
-          <button className="ml-auto flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
+          <button
+            className="ml-auto flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
+            onClick={handleSwap}
+          >
             <img src={Swap} width={20} height={20} aria-hidden="true" />
           </button>
         </div>

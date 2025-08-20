@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import logo from "../assets/logo.svg";
 import TranslateForm from "./TranslateForm";
+import getTranslation from "../api/getTranslation";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -24,6 +25,22 @@ function reducer(state, action) {
         to: action.value,
       };
     }
+
+    case "update_translated_text": {
+      return {
+        ...state,
+        translatedText: action.text,
+      };
+    }
+
+    case "swap_options": {
+      return {
+        toTranslate: state.translatedText,
+        from: state.to,
+        to: state.from,
+        translatedText: state.toTranslate,
+      };
+    }
   }
   throw Error("Unknown action: " + action.type);
 }
@@ -37,6 +54,25 @@ const initialState = {
 
 const TranslateApp = () => {
   const [translateAppState, dispatch] = useReducer(reducer, initialState);
+
+  const translateText = async (text, from, to) => {
+    const formattedText = text.replace(/\s/g, "%20");
+
+    const translation = await getTranslation(formattedText, from, to);
+    dispatch({
+      type: "update_translated_text",
+      text: translation.translatedText,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    translateText(
+      translateAppState.toTranslate,
+      translateAppState.from,
+      translateAppState.to,
+    );
+  };
 
   return (
     <main className="min-h-screen space-y-12 bg-[url(/hero_img-sm.jpg)] bg-top bg-no-repeat px-4 py-12 md:bg-[url(/hero_img.jpg)] lg:bg-size-[100%_auto]">
@@ -55,6 +91,7 @@ const TranslateApp = () => {
         translatingFrom={translateAppState.from}
         translatingTo={translateAppState.to}
         dispatch={dispatch}
+        handleSubmit={handleSubmit}
       />
     </main>
   );
