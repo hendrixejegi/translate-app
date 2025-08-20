@@ -1,19 +1,63 @@
+import { cn } from "../lib/utils/cn";
+
 import SoundMax from "../assets/sound_max_fill.svg";
 import Copy from "../assets/Copy.svg";
 import Alfa from "../assets/Sort_alfa.svg";
 import Swap from "../assets/Horizontal_top_left_main.svg";
 
-const TranslateForm = () => {
+const MAX_LENGTH = 500;
+
+const TranslateForm = (props) => {
+  const {
+    toTranslate,
+    alreadyTranslated,
+    translatingFrom,
+    translatingTo,
+    dispatch,
+    handleSubmit,
+  } = props;
+
+  const handleTextChange = (event) => {
+    event.preventDefault();
+
+    const newText = event.target.value;
+
+    newText.length <= MAX_LENGTH
+      ? dispatch({ type: "update_text_to_translate", newText })
+      : alert("Maximum characters reached!");
+  };
+
+  const updateSourceLanguage = (event) => {
+    event.preventDefault();
+    dispatch({ type: "update_translating_from", value: event.target.value });
+  };
+
+  const updateTargetLanguage = (event) => {
+    event.preventDefault();
+    dispatch({ type: "update_translating_to", value: event.target.value });
+  };
+
+  const handleSwap = (event) => {
+    event.preventDefault();
+    dispatch({ type: "swap_options" });
+  };
+
   return (
-    <form className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
+    <form
+      className="space-y-4 lg:flex lg:justify-center lg:gap-4 lg:space-y-0"
+      onSubmit={handleSubmit}
+    >
       <fieldset
         name="translate-from"
-        className="bg-accent-300 mx-auto max-w-2xl rounded-3xl border-2 border-neutral-200 p-6 backdrop-blur-md lg:mx-0"
+        className="bg-accent-300 mx-auto w-full max-w-2xl rounded-3xl border-2 border-neutral-200 p-6 backdrop-blur-md lg:mx-0"
       >
         <div className="flex flex-wrap items-center gap-4">
           <label
             htmlFor="detect-language"
-            className="sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5"
+            className={cn(
+              "sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5",
+              translatingFrom === "detect-language" ? "bg-neutral-200" : null,
+            )}
           >
             Detect Language
             <input
@@ -22,33 +66,44 @@ const TranslateForm = () => {
               id="detect-language"
               value="detect-language"
               className="absolute top-0 left-0 opacity-0"
+              defaultChecked={translatingFrom === "detect-language"}
+              onChange={updateSourceLanguage}
             />
           </label>
           <label
             htmlFor="from-en"
-            className="sans-16 text-text-100 cursor-pointer rounded-xl bg-neutral-200 px-2.5 py-1.5"
+            className={cn(
+              "sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5",
+              translatingFrom === "en" ? "bg-neutral-200" : null,
+            )}
           >
             English
             <input
               type="radio"
               name="from"
               id="from-en"
-              value="english"
-              checked
+              value="en"
+              defaultChecked={translatingFrom === "en"}
               className="absolute top-0 left-0 opacity-0"
+              onChange={updateSourceLanguage}
             />
           </label>
           <label
             htmlFor="from-fr"
-            className="sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5"
+            className={cn(
+              "sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5",
+              translatingFrom === "fr" ? "bg-neutral-200" : null,
+            )}
           >
             French
             <input
               type="radio"
               name="from"
               id="from-fr"
-              value="french"
+              value="fr"
+              defaultChecked={translatingFrom === "fr"}
               className="absolute top-0 left-0 opacity-0"
+              onChange={updateSourceLanguage}
             />
           </label>
           <select
@@ -65,11 +120,14 @@ const TranslateForm = () => {
         <textarea
           name="input-from"
           id="input-from"
-          value="Hello, how are you?"
+          value={toTranslate ?? "Hello, how are you?"}
           className="sans-16 text-text-50 field-sizing-content min-h-[120px] w-full resize-none border-0 outline-0"
+          onChange={handleTextChange}
         ></textarea>
 
-        <div className="sans-12 text-text-100 mb-2 text-right">19/500</div>
+        <div className="sans-12 text-text-100 mb-2 text-right">
+          {toTranslate?.length}/500
+        </div>
         <div className="flex items-end justify-between">
           <div className="flex items-center gap-2">
             <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
@@ -79,7 +137,10 @@ const TranslateForm = () => {
               <img src={Copy} width={20} height={20} aria-hidden="true" />
             </button>
           </div>
-          <button className="sans-16 text-text-50 flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-400 px-4 py-2">
+          <button
+            type="submit"
+            className="sans-16 text-text-50 flex cursor-pointer items-center gap-2 rounded-xl border border-blue-200 bg-blue-400 px-4 py-2"
+          >
             <img src={Alfa} width={24} height={24} aria-hidden="true" />
             <span>Translate</span>
           </button>
@@ -87,34 +148,43 @@ const TranslateForm = () => {
       </fieldset>
       <fieldset
         name="translate-to"
-        className="bg-accent-300 mx-auto flex max-w-2xl flex-col rounded-3xl border-2 border-neutral-200 p-6 backdrop-blur-md lg:mx-0"
+        className="bg-accent-300 mx-auto flex w-full max-w-2xl flex-col rounded-3xl border-2 border-neutral-200 p-6 backdrop-blur-md lg:mx-0"
       >
         <div className="flex flex-wrap items-center gap-4">
           <label
             htmlFor="to-en"
-            className="sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5"
+            className={cn(
+              "sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5",
+              translatingTo === "en" ? "bg-neutral-200" : null,
+            )}
           >
             English
             <input
               type="radio"
               name="to"
               id="to-en"
-              value="english"
+              value="en"
+              defaultChecked={translatingTo === "en"}
               className="absolute top-0 left-0 opacity-0"
+              onChange={updateTargetLanguage}
             />
           </label>
           <label
             htmlFor="to-fr"
-            className="sans-16 text-text-100 cursor-pointer rounded-xl bg-neutral-200 px-2.5 py-1.5"
+            className={cn(
+              "sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5",
+              translatingTo === "fr" ? "bg-neutral-200" : null,
+            )}
           >
             French
             <input
               type="radio"
               name="to"
               id="to-fr"
-              value="french"
-              checked
+              value="fr"
+              defaultChecked={translatingTo === "fr"}
               className="absolute top-0 left-0 opacity-0"
+              onChange={updateTargetLanguage}
             />
           </label>
           <select
@@ -124,7 +194,10 @@ const TranslateForm = () => {
           >
             <option value="spanish">Spanish</option>
           </select>
-          <button className="ml-auto flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
+          <button
+            className="ml-auto flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
+            onClick={handleSwap}
+          >
             <img src={Swap} width={20} height={20} aria-hidden="true" />
           </button>
         </div>
@@ -134,7 +207,7 @@ const TranslateForm = () => {
         <textarea
           name="input-to"
           id="input-to"
-          value="Bonjour, comment allez-vous ?"
+          value={alreadyTranslated}
           className="sans-16 text-text-50 field-sizing-content min-h-[140px] w-full resize-none border-0 outline-0"
           disabled
         ></textarea>
