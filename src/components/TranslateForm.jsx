@@ -1,9 +1,6 @@
 import { cn } from "../lib/utils/cn";
 
-import SoundMax from "../assets/sound_max_fill.svg";
-import Copy from "../assets/Copy.svg";
-import Alfa from "../assets/Sort_alfa.svg";
-import Swap from "../assets/Horizontal_top_left_main.svg";
+import { Copy, Alfa, Swap, SoundMax } from "../assets/icons";
 
 const MAX_LENGTH = 500;
 
@@ -130,18 +127,18 @@ const TranslateForm = (props) => {
         </div>
         <div className="flex items-end justify-between">
           <div className="flex items-center gap-2">
-            <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
-              <img src={SoundMax} width={20} height={20} aria-hidden="true" />
+            <button className="hover:border-text-100 hover:text-text-100 flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1 text-neutral-200">
+              <SoundMax aria-hidden="true" />
             </button>
-            <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
-              <img src={Copy} width={20} height={20} aria-hidden="true" />
+            <button className="hover:border-text-100 hover:text-text-100 flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1 text-neutral-200">
+              <Copy aria-hidden="true" />
             </button>
           </div>
           <button
             type="submit"
             className="sans-16 text-text-50 flex cursor-pointer items-center gap-2 rounded-xl border border-blue-200 bg-blue-400 px-4 py-2"
           >
-            <img src={Alfa} width={24} height={24} aria-hidden="true" />
+            <Alfa aria-hidden="true" />
             <span>Translate</span>
           </button>
         </div>
@@ -195,10 +192,10 @@ const TranslateForm = (props) => {
             <option value="spanish">Spanish</option>
           </select>
           <button
-            className="ml-auto flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
+            className="hover:border-text-100 hover:text-text-100 ml-auto flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1 text-neutral-200"
             onClick={handleSwap}
           >
-            <img src={Swap} width={20} height={20} aria-hidden="true" />
+            <Swap aria-hidden="true" />
           </button>
         </div>
 
@@ -214,11 +211,11 @@ const TranslateForm = (props) => {
 
         <div className="flex grow items-end justify-between">
           <div className="flex items-center gap-2">
-            <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
-              <img src={SoundMax} width={20} height={20} aria-hidden="true" />
+            <button className="hover:border-text-100 hover:text-text-100 flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1 text-neutral-200">
+              <SoundMax aria-hidden="true" />
             </button>
-            <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
-              <img src={Copy} width={20} height={20} aria-hidden="true" />
+            <button className="hover:border-text-100 hover:text-text-100 flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1 text-neutral-200">
+              <Copy aria-hidden="true" />
             </button>
           </div>
         </div>

@@ -52,26 +52,28 @@ const initialState = {
   translatedText: "Bonjour, comment allez-vous ?",
 };
 
+const translateText = async (text, from, to) => {
+  const formattedText = text.replace(/\s/g, "%20");
+  const translation = await getTranslation(formattedText, from, to);
+  return translation.translatedText;
+};
+
 const TranslateApp = () => {
   const [translateAppState, dispatch] = useReducer(reducer, initialState);
 
-  const translateText = async (text, from, to) => {
-    const formattedText = text.replace(/\s/g, "%20");
-
-    const translation = await getTranslation(formattedText, from, to);
-    dispatch({
-      type: "update_translated_text",
-      text: translation.translatedText,
-    });
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
+
     translateText(
       translateAppState.toTranslate,
       translateAppState.from,
       translateAppState.to,
-    );
+    ).then((res) => {
+      dispatch({
+        type: "update_translated_text",
+        text: res,
+      });
+    });
   };
 
   return (
