@@ -12,6 +12,7 @@ const TranslateForm = (props) => {
     translatingTo,
     dispatch,
     handleSubmit,
+    isLoading,
   } = props;
 
   const handleTextChange = (event) => {
@@ -120,6 +121,7 @@ const TranslateForm = (props) => {
           value={toTranslate ?? "Hello, how are you?"}
           className="sans-16 text-text-50 field-sizing-content min-h-[120px] w-full resize-none border-0 outline-0"
           onChange={handleTextChange}
+          placeholder="Enter Text"
         ></textarea>
 
         <div className="sans-12 text-text-100 mb-2 text-right">
@@ -201,13 +203,28 @@ const TranslateForm = (props) => {
 
         <div className="my-6 h-0.5 w-full bg-neutral-200"></div>
 
-        <textarea
-          name="input-to"
-          id="input-to"
-          value={alreadyTranslated}
-          className="sans-16 text-text-50 field-sizing-content min-h-[140px] w-full resize-none border-0 outline-0"
-          disabled
-        ></textarea>
+        {isLoading ? (
+          <div className="sans-16 text-text-50 min-h-[140px] w-full">
+            <div className="w-fit">
+              {toTranslate.split(" ").map((word, idx) => (
+                <span key={idx}>
+                  <span className="animate-loading rounded-sm text-transparent">
+                    {word}
+                  </span>{" "}
+                  <span> </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <textarea
+            name="input-to"
+            id="input-to"
+            value={alreadyTranslated}
+            className="sans-16 text-text-50 field-sizing-content min-h-[140px] w-full resize-none border-0 outline-0"
+            disabled
+          ></textarea>
+        )}
 
         <div className="flex grow items-end justify-between">
           <div className="flex items-center gap-2">

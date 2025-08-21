@@ -1,7 +1,8 @@
-import { useReducer } from "react";
+import { useReducer, useEffect, useState } from "react";
+import useDebounce from "../hooks/useDebounce";
 import logo from "../assets/logo.svg";
 import TranslateForm from "./TranslateForm";
-import getTranslation from "../api/getTranslation";
+import getTranslation from "../api/MyMemory";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -52,29 +53,52 @@ const initialState = {
   translatedText: "Bonjour, comment allez-vous ?",
 };
 
-const translateText = async (text, from, to) => {
-  const formattedText = text.replace(/\s/g, "%20");
-  const translation = await getTranslation(formattedText, from, to);
-  return translation.translatedText;
-};
-
 const TranslateApp = () => {
   const [translateAppState, dispatch] = useReducer(reducer, initialState);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const [isLoading, setIsLoading] = useState(false);
 
-    translateText(
-      translateAppState.toTranslate,
-      translateAppState.from,
-      translateAppState.to,
-    ).then((res) => {
+  const translateText = async (text, from, to) => {
+    const formattedText = text.replace(/\s/g, "%20");
+    const translation = await getTranslation(formattedText, from, to);
+
+    if (translation) {
+      setIsLoading(false);
       dispatch({
         type: "update_translated_text",
-        text: res,
+        text: translation.translatedText,
       });
-    });
+    }
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+
+    translateAppState.toTranslate &&
+      translateText(
+        translateAppState.toTranslate,
+        translateAppState.from,
+        translateAppState.to,
+      );
+  };
+
+  // Enable real time translation
+  const debouncedValue = useDebounce(translateAppState.toTranslate);
+
+  useEffect(() => {
+    const liveRequestHandler = async () => {
+      setIsLoading(true);
+
+      debouncedValue &&
+        translateText(
+          debouncedValue,
+          translateAppState.from,
+          translateAppState.to,
+        );
+    };
+    liveRequestHandler();
+  }, [debouncedValue, translateAppState.from, translateAppState.to]);
 
   return (
     <main className="min-h-screen space-y-12 bg-[url(/hero_img-sm.jpg)] bg-top bg-no-repeat px-4 py-12 md:bg-[url(/hero_img.jpg)] lg:bg-size-[100%_auto]">
@@ -94,6 +118,7 @@ const TranslateApp = () => {
         translatingTo={translateAppState.to}
         dispatch={dispatch}
         handleSubmit={handleSubmit}
+        isLoading={isLoading}
       />
     </main>
   );

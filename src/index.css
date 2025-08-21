@@ -17,6 +17,18 @@
   --color-accent-500: #121826cc;
 
   --font-sans: "DM Sans", sans-serif;
+
+  --animate-loading: text-loading 1s linear infinite alternate;
+
+  @keyframes text-loading {
+    0% {
+      background-color: #4d5562;
+    }
+
+    100% {
+      background-color: #394150;
+    }
+  }
 }
 
 @layer utilities {
