@@ -9,13 +9,14 @@ async function getTranslation(
     const res = await fetch(url);
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch Translation with code ${res.status}`);
+      throw new Error(`Failed to fetch translation (status ${res.status})`);
     }
 
     const result = await res.json();
     return result.responseData;
   } catch (error) {
-    console.error(error.message);
+    console.error("Error in getTranslation:", error);
+    throw error;
   }
 }
 

@@ -60,14 +60,19 @@ const TranslateApp = () => {
 
   const translateText = async (text, from, to) => {
     const formattedText = text.replace(/\s/g, "%20");
-    const translation = await getTranslation(formattedText, from, to);
 
-    if (translation) {
-      setIsLoading(false);
-      dispatch({
-        type: "update_translated_text",
-        text: translation.translatedText,
-      });
+    try {
+      const translation = await getTranslation(formattedText, from, to);
+
+      if (translation) {
+        setIsLoading(false);
+        dispatch({
+          type: "update_translated_text",
+          text: translation.translatedText,
+        });
+      }
+    } catch (error) {
+      console.log("Error:", error);
     }
   };
 
