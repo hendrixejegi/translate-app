@@ -52,7 +52,7 @@ const TranslateForm = (props) => {
         className="bg-accent-300 mx-auto w-full max-w-2xl rounded-3xl border-2 border-neutral-200 p-6 backdrop-blur-md lg:mx-0"
       >
         <div className="flex flex-wrap items-center gap-4">
-          <label
+          {/* <label
             htmlFor="detect-language"
             className={cn(
               "sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5",
@@ -69,7 +69,7 @@ const TranslateForm = (props) => {
               defaultChecked={translatingFrom === "detect-language"}
               onChange={updateSourceLanguage}
             />
-          </label>
+          </label> */}
           <label
             htmlFor="from-en"
             className={cn(
@@ -106,13 +106,24 @@ const TranslateForm = (props) => {
               onChange={updateSourceLanguage}
             />
           </label>
-          <select
-            name="from-options"
-            id="from-options"
-            className="sans-16 text-text-100 cursor-pointer border-0 outline-0"
+          <label
+            htmlFor="from-es"
+            className={cn(
+              "sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5",
+              translatingFrom === "es" ? "bg-neutral-200" : null,
+            )}
           >
-            <option value="spanish">Spanish</option>
-          </select>
+            Spanish
+            <input
+              type="radio"
+              name="from"
+              id="from-es"
+              value="es"
+              defaultChecked={translatingFrom === "es"}
+              className="absolute top-0 left-0 opacity-0"
+              onChange={updateSourceLanguage}
+            />
+          </label>
         </div>
 
         <div className="my-6 h-0.5 w-full bg-neutral-200"></div>
@@ -187,13 +198,24 @@ const TranslateForm = (props) => {
               onChange={updateTargetLanguage}
             />
           </label>
-          <select
-            name="to-options"
-            id="to-options"
-            className="sans-16 text-text-100 cursor-pointer border-0 outline-0"
+          <label
+            htmlFor="to-es"
+            className={cn(
+              "sans-16 text-text-100 cursor-pointer rounded-xl px-2.5 py-1.5",
+              translatingTo === "es" ? "bg-neutral-200" : null,
+            )}
           >
-            <option value="spanish">Spanish</option>
-          </select>
+            Spanish
+            <input
+              type="radio"
+              name="to"
+              id="to-es"
+              value="es"
+              defaultChecked={translatingTo === "es"}
+              className="absolute top-0 left-0 opacity-0"
+              onChange={updateTargetLanguage}
+            />
+          </label>
           <button
             className="ml-auto flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
             onClick={handleSwap}
