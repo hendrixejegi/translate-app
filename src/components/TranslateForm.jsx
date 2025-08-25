@@ -42,6 +42,22 @@ const TranslateForm = (props) => {
     dispatch({ type: "swap_options" });
   };
 
+  const getLanguage = () => {
+    switch (translatingTo) {
+      case "en":
+        return "English";
+
+      case "fr":
+        return "French";
+
+      case "es":
+        return "Spanish";
+
+      default:
+        break;
+    }
+  };
+
   return (
     <form
       className="space-y-4 lg:flex lg:justify-center lg:gap-4 lg:space-y-0"
@@ -134,6 +150,11 @@ const TranslateForm = (props) => {
           value={toTranslate ?? "Hello, how are you?"}
           className="sans-16 text-text-50 field-sizing-content min-h-[120px] w-full resize-none border-0 outline-0"
           onChange={handleTextChange}
+          aria-label={
+            toTranslate.length > 0
+              ? "Text to translate"
+              : "Enter text to translate"
+          }
         ></textarea>
 
         <div className="sans-12 text-text-100 mb-2 text-right">
@@ -141,14 +162,21 @@ const TranslateForm = (props) => {
         </div>
         <div className="flex items-end justify-between">
           <div className="flex items-center gap-2">
-            <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
+            <button
+              aria-label="Play audio of input text"
+              className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
+            >
               <img src={SoundMax} width={20} height={20} aria-hidden="true" />
             </button>
-            <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
+            <button
+              aria-label="Copy input text"
+              className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
+            >
               <img src={Copy} width={20} height={20} aria-hidden="true" />
             </button>
           </div>
           <button
+            aria-label={`Translate Text to ${getLanguage()}`}
             type="submit"
             className="sans-16 text-text-50 flex cursor-pointer items-center gap-2 rounded-xl border border-blue-200 bg-blue-400 px-4 py-2"
           >
@@ -217,6 +245,7 @@ const TranslateForm = (props) => {
             />
           </label>
           <button
+            aria-label="Swap languages and text"
             className="ml-auto flex cursor-pointer items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
             onClick={handleSwap}
           >
@@ -232,14 +261,21 @@ const TranslateForm = (props) => {
           value={alreadyTranslated}
           className="sans-16 text-text-50 field-sizing-content min-h-[140px] w-full resize-none border-0 outline-0"
           disabled
+          aria-label={`Translated text in ${getLanguage()}`}
         ></textarea>
 
         <div className="flex grow items-end justify-between">
           <div className="flex items-center gap-2">
-            <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
+            <button
+              aria-label="Play audio of translated text"
+              className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
+            >
               <img src={SoundMax} width={20} height={20} aria-hidden="true" />
             </button>
-            <button className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1">
+            <button
+              aria-label="Copy translated text"
+              className="flex items-center justify-center rounded-xl border-2 border-neutral-200 p-1"
+            >
               <img src={Copy} width={20} height={20} aria-hidden="true" />
             </button>
           </div>
